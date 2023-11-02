@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "clinyong.vscode-css-modules",
+    "ms-azuretools.vscode-docker",
+    "eamodio.gitlens",
+    "igorsbitnev.error-gutters",
+    "usernamehw.errorlens",
+    "esbenp.prettier-vscode"
+  ]
+}

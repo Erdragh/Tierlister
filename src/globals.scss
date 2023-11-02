@@ -1,0 +1,47 @@
+@use "mixins.scss";
+
+:root {
+  @include mixins.color-range("background", hsl(0deg, 0%, 50%));
+  @include mixins.color-range("primary", hsl(205deg, 100%, 50%));
+
+  --sz-base: 10px;
+
+  --border: 1px solid var(--clr-background-150);
+  --border-radius: calc(0.5 * var(--sz-base));
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI";
+  background-color: var(--clr-background-175);
+  color: var(--clr-background-175-contrast);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+div#app {
+  flex: 1;
+  width: 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    @include mixins.color-range("background", hsl(0deg, 0%, 50%), true);
+    @include mixins.color-range("primary", hsl(205deg, 100%, 50%), true);
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+  &:hover {
+    color: var(--clr-primary-50);
+  }
+}

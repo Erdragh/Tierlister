@@ -1,0 +1,94 @@
+.perspectiveContainer {
+  perspective: calc(max(var(--highlight-w), var(--highlight-h)) * 20rem);
+  display: flex;
+  --click-depth: 1;
+  --half-w: calc(var(--highlight-w) / 2);
+  --half-h: calc(var(--highlight-h) / 2);
+  --max-x-angle: calc(
+    acos((var(--half-w) - var(--click-depth)) / var(--half-w))
+  );
+  --max-y-angle: calc(
+    acos((var(--half-h) - var(--click-depth)) / var(--half-h))
+  );
+
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: none;
+  border: none;
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+
+  .content {
+    flex: 1;
+    width: 100%;
+    background-color: rgba(var(--clr-background-150-rgb), 0.6);
+    backdrop-filter: blur(10px);
+    border: var(--border);
+    color: var(--clr-background-150-contrast);
+    padding: var(--sz-base);
+    border-radius: var(--border-radius);
+    transition: 0.2s;
+  }
+
+  .highlight {
+    position: absolute;
+    top: calc(var(--highlight-y) * 100%);
+    left: calc(var(--highlight-x) * 100%);
+    &::after {
+      opacity: 0;
+      z-index: -1;
+      content: "";
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: rgba(var(--clr-background-150-contrast-rgb), 0.6);
+      box-shadow: 0 0 150px 10px var(--clr-background-150-contrast);
+      position: absolute;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.2s transform 0.2s;
+    }
+  }
+  &:hover,
+  &:focus-visible {
+    .content {
+      background-color: rgba(var(--clr-background-150-rgb), 0.7);
+    }
+  }
+  &:hover,
+  &:focus-visible {
+    .highlight::after {
+      opacity: 1;
+    }
+  }
+  &:focus-visible {
+    --highlight-x: 0.5 !important;
+    --highlight-y: 0.5 !important;
+
+    div.content {
+      border-color: var(--clr-background-100);
+      outline: none;
+      box-shadow: none;
+    }
+  }
+
+  &:active {
+    .highlight::after {
+      box-shadow: 0 0 250px 60px var(--clr-background-150-contrast);
+    }
+    transform-origin: calc((1 - var(--highlight-x)) * 100%)
+      calc((1 - var(--highlight-y)) * 100%);
+    transform: rotateY(
+        calc(2 * (var(--highlight-x) - 0.5) * var(--max-x-angle))
+      )
+      rotateX(calc(-2 * (var(--highlight-y) - 0.5) * var(--max-y-angle)));
+  }
+}

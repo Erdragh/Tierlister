@@ -1,0 +1,36 @@
+@use "sass:color";
+@use "sass:math";
+
+@mixin color-variables($name, $color) {
+  --clr-#{$name}: #{$color};
+  --clr-#{$name}-rgb: #{color.red($color)}, #{color.green($color)},
+    #{color.blue($color)};
+}
+
+@mixin color-with-contrast($name, $color, $contrast) {
+  @include color-variables($name, $color);
+  @include color-variables($name + "-contrast", $contrast);
+}
+
+@mixin color($name, $color) {
+  $contrast: #000000;
+  @if (color.lightness($color) < 50%) {
+    $contrast: #ffffff;
+  }
+  @include color-with-contrast($name, $color, $contrast);
+}
+
+$color-steps: -75%, -50%, -20%, 0%, 20%, 50%, 75%;
+
+@mixin color-range($name, $base, $dark-mode: false) {
+  @each $step in $color-steps {
+    $amount: $step;
+    @if ($dark-mode) {
+      $amount: -1 * $step;
+    }
+    @include color(
+      $name + "-" + (math.div(($step + 100%), 1%)),
+      color.scale($base, $lightness: $amount)
+    );
+  }
+}

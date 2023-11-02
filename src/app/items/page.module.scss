@@ -1,0 +1,25 @@
+@use "sass:math";
+
+.cards {
+  margin-top: var(--sz-base);
+  columns: 6;
+  gap: var(--sz-base);
+
+  .card {
+    width: 100%;
+    min-width: 100px;
+    &:not(:first-child) {
+      margin-top: var(--sz-base);
+    }
+  }
+}
+
+$width: 100px;
+@while ($width < 1000px) {
+  @media screen and (min-width: #{($width + (2 + math.div($width, 100px)) * 10px)}) {
+    .cards {
+      columns: #{math.div($width, 100px)};
+    }
+  }
+  $width: $width + 100px;
+}

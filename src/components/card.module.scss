@@ -1,0 +1,17 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  max-width: 300px;
+  appearance: none;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.imageContainer {
+  .image {
+    width: 100%;
+    height: auto;
+  }
+}

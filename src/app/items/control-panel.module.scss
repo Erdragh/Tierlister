@@ -1,0 +1,11 @@
+.controlPanel {
+  display: flex;
+  gap: var(--sz-base);
+  align-items: center;
+}
+
+.buttons {
+  display: flex;
+  margin-left: auto;
+  gap: var(--sz-base);
+}

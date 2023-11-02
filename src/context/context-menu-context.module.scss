@@ -1,0 +1,36 @@
+dialog.contextMenu {
+  position: absolute;
+  border: none;
+  background: none;
+  top: var(--context-y);
+  left: var(--context-x);
+  box-shadow: 3px 6px 15px -6px #0003;
+  border-radius: var(--sz-base);
+  margin: 0;
+  width: max-content;
+  z-index: 100;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  button {
+    text-align: left;
+    border-radius: var(--border-radius);
+    --border-radius: 0;
+    --border: none;
+    border: 1px solid var(--clr-background-150);
+    z-index: 101;
+    &:first-child {
+      --border-radius: var(--sz-base) var(--sz-base) 0 0;
+    }
+    &:last-child {
+      --border-radius: 0 0 var(--sz-base) var(--sz-base);
+    }
+    &:not(:first-child) {
+      border-top: none;
+    }
+    &:hover,
+    &:focus-visible {
+      z-index: 102;
+    }
+  }
+}
