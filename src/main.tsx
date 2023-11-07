@@ -5,6 +5,7 @@ import MainPage from "./app/main-page.tsx";
 
 import ItemsPage from "./app/items/page.tsx";
 import MainLayout from "./app/layout.tsx";
+import LoginPage from "./app/login/page.tsx";
 import "./globals.scss";
 
 const router = createBrowserRouter([
@@ -21,6 +22,14 @@ const router = createBrowserRouter([
         element: <ItemsPage />,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <LoginPage signup={false} />,
+  },
+  {
+    path: "/signup",
+    element: <LoginPage signup={true} />,
   },
 ]);
 

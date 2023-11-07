@@ -1,4 +1,5 @@
 import Card from "../../components/card";
+import LoginCard from "../login/login-card";
 import ControlPanel from "./control-panel";
 
 import styles from "./page.module.scss";
@@ -19,6 +20,7 @@ export default function ItemsPage() {
           ></Card>
         ))}
       </div>
+      <LoginCard></LoginCard>
     </>
   );
 }

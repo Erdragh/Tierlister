@@ -20,7 +20,7 @@
   @include color-with-contrast($name, $color, $contrast);
 }
 
-$color-steps: -75%, -50%, -20%, 0%, 20%, 50%, 75%;
+$color-steps: -90%, -75%, -50%, -20%, 0%, 20%, 50%, 75%, 90%;
 
 @mixin color-range($name, $base, $dark-mode: false) {
   @each $step in $color-steps {

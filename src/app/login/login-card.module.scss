@@ -1,0 +1,52 @@
+.container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 200;
+  min-width: 300px;
+  max-width: calc(100% - 2 * var(--sz-base));
+  max-height: 100%;
+  overflow: auto;
+  margin: 0;
+
+  padding: var(--sz-base);
+  background-color: rgba(var(--clr-background-175-rgb), 0.6);
+  color: rgb(var(--clr-background-175-contrast));
+  backdrop-filter: blur(50px);
+  border-radius: calc(1.5 * var(--sz-base));
+  border: 1px solid var(--clr-background-150);
+
+  &[open] {
+    display: flex;
+  }
+  flex-direction: column;
+  gap: calc(0.5 * var(--sz-base));
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: calc(0.5 * var(--sz-base));
+
+    label {
+      display: flex;
+      flex-direction: column;
+      input {
+        appearance: none;
+        padding: calc(0.5 * var(--sz-base));
+        border-radius: calc(0.5 * var(--sz-base));
+        border: 1px solid var(--clr-background-150);
+        background-color: rgba(var(--clr-background-150-rgb), 0.3);
+        color: var(--clr-background-150-contrast);
+        &:focus {
+          outline: none;
+          border-color: var(--clr-background-100);
+        }
+      }
+    }
+
+    button {
+      margin-top: var(--sz-base);
+    }
+  }
+}

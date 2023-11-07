@@ -7,8 +7,8 @@ div.header {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: rgba(var(--clr-background-150-rgb), 0.5);
-  backdrop-filter: blur(50px);
+  background-color: rgba(var(--clr-background-150-rgb), 0.6);
+  backdrop-filter: blur(10px);
   border-bottom: var(--border);
   color: var(--clr-background-150-contrast);
   padding: var(--sz-base);

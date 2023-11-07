@@ -1,0 +1,20 @@
+a.accountMenu {
+  display: flex;
+  gap: calc(0.5 * var(--sz-base));
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+div.profile {
+  background-color: rgba(var(--clr-background-150-contrast-rgb), 0.5);
+  border: 1px solid var(--clr-background-150-contrast);
+  color: var(--clr-background-150);
+  border-radius: 50%;
+  font-size: 12px;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
