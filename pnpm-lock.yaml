@@ -46,9 +46,6 @@ devDependencies:
   '@typescript-eslint/parser':
     specifier: ^6.9.1
     version: 6.9.1(eslint@8.52.0)(typescript@5.2.2)
-  bun:
-    specifier: ^1.0.10
-    version: 1.0.10
   eslint:
     specifier: ^8
     version: 8.52.0
@@ -383,54 +380,6 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
     dev: true
-
-  /@oven/bun-darwin-aarch64@1.0.10:
-    resolution: {integrity: sha512-+YBYBmcFs9jwchXplQ/ybie9gqJjSx7waFqMR8EQWwInaB1JSwGaWahEdeGX2krXrKtJp0+5h5OV/0vEBzn+nw==}
-    cpu: [arm64]
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@oven/bun-darwin-x64-baseline@1.0.10:
-    resolution: {integrity: sha512-jbk2aZYMUgyOpDnTJKni5yhGQjnAQkit9zis/6kQFqGi2siySUqwfKkCXyTNzmE8ViNwGpDqOKkF5A86xaQnxA==}
-    cpu: [x64]
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@oven/bun-darwin-x64@1.0.10:
-    resolution: {integrity: sha512-R6ThgLXtsol80IZHxC5F+OIXUdJ8RCaTyOk4Sb06SB2Zu3+7c22gN9ekgs7Ny0nsvvE2A++vdbiDPA1+hU9uVg==}
-    cpu: [x64]
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@oven/bun-linux-aarch64@1.0.10:
-    resolution: {integrity: sha512-uumkrfriJ0mGgN/8YYC9UMOaSuCx0LKD3By2ErxGkxcEsvsaiyL0lSy3gOvMpWC3dyHZFdpLjO5DmXucwQHw3A==}
-    cpu: [arm64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@oven/bun-linux-x64-baseline@1.0.10:
-    resolution: {integrity: sha512-glIf7RCN6HOfYwBfGNhlReFQmVbn9XWhqsgFxvu1zOphMTqb6j1Gn2/x1TTpkKLj/AtndJVITJmshgintjvjsA==}
-    cpu: [x64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@oven/bun-linux-x64@1.0.10:
-    resolution: {integrity: sha512-RaF0mt/VgVoDztFnaXJLdfAgQf+qNRCiBhHWH+Yump0mRF+6kMRayr5oFys+Q3NOVrLQv3KGG+oYoKBmpRtskA==}
-    cpu: [x64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
 
   /@remix-run/router@1.11.0:
     resolution: {integrity: sha512-BHdhcWgeiudl91HvVa2wxqZjSHbheSgIiDvxrF1VjFzBzpTtuDPkOdOi3Iqvc08kXtFkLjhbS+ML9aM8mJS+wQ==}
@@ -873,21 +822,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       fill-range: 7.0.1
-    dev: true
-
-  /bun@1.0.10:
-    resolution: {integrity: sha512-/zj4fTvNeKZtEeSwAtKg1RLH9RpBZ2mjG92D2IImcCIU76z/9f3BGjZC4x1C648nnjdub0TMaM8ffxSGC/4OKg==}
-    cpu: [arm64, x64]
-    os: [darwin, linux]
-    hasBin: true
-    requiresBuild: true
-    optionalDependencies:
-      '@oven/bun-darwin-aarch64': 1.0.10
-      '@oven/bun-darwin-x64': 1.0.10
-      '@oven/bun-darwin-x64-baseline': 1.0.10
-      '@oven/bun-linux-aarch64': 1.0.10
-      '@oven/bun-linux-x64': 1.0.10
-      '@oven/bun-linux-x64-baseline': 1.0.10
     dev: true
 
   /call-bind@1.0.5:

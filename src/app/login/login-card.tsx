@@ -31,12 +31,28 @@ export default function LoginCard({
   const handleLogin = useCallback<FormEventHandler<HTMLFormElement>>(
     async (e) => {
       e.preventDefault();
+      const data: FormData = new FormData(e.target as HTMLFormElement);
+      if (isSignup && data.get("email") !== data.get("verify-email")) {
+        return;
+      }
       setLoading(true);
-      await userContext.login("asdf", "asdf");
+      let result = false;
+      if (isSignup) {
+        result = await userContext.signup(
+          data.get("email")! as string,
+          data.get("password")! as string,
+          data.get("username")! as string
+        );
+      } else {
+        result = await userContext.login(
+          data.get("email")! as string,
+          data.get("password")! as string
+        );
+      }
       setLoading(false);
-      navigate("/");
+      if (result) navigate("/");
     },
-    [userContext.login, setLoading]
+    [userContext.login, setLoading, isSignup]
   );
 
   return (
@@ -50,6 +66,7 @@ export default function LoginCard({
             id="email"
             placeholder="mail@example.com"
             autoFocus
+            required
           />
         </label>
         {isSignup && (
@@ -61,6 +78,17 @@ export default function LoginCard({
                 name="verify-email"
                 id="verify-email"
                 placeholder="mail@example.com"
+                required
+              />
+            </label>
+            <label htmlFor="username">
+              Username
+              <input
+                type="text"
+                name="username"
+                id="username"
+                placeholder="Username"
+                required
               />
             </label>
           </>
@@ -71,7 +99,9 @@ export default function LoginCard({
             type="password"
             name="password"
             id="password"
-            placeholder="S3cur3P455w0rd"
+            placeholder="Password"
+            required
+            minLength={8}
           />
         </label>
         <Button>{isSignup ? "Sign Up" : "Login"}</Button>

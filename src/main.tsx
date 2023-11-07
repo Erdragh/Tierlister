@@ -7,6 +7,7 @@ import AccountPage from "./app/account/page.tsx";
 import ItemsPage from "./app/items/page.tsx";
 import MainLayout from "./app/layout.tsx";
 import LoginPage from "./app/login/page.tsx";
+import { AppwriteContextProvider } from "./context/appwrite-context.tsx";
 import { UserContextProvider } from "./context/user-context.tsx";
 import "./globals.scss";
 
@@ -41,8 +42,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("app")!).render(
   <React.StrictMode>
-    <UserContextProvider>
-      <RouterProvider router={router} />
-    </UserContextProvider>
+    <AppwriteContextProvider>
+      <UserContextProvider>
+        <RouterProvider router={router} />
+      </UserContextProvider>
+    </AppwriteContextProvider>
   </React.StrictMode>
 );

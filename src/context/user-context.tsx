@@ -1,17 +1,25 @@
+import { Account, AppwriteException, ID, Models } from "appwrite";
 import React, {
   createContext,
   useCallback,
+  useContext,
   useEffect,
   useMemo,
   useState,
 } from "react";
 import { NavigateFunction } from "react-router-dom";
+import { AppwriteContext } from "./appwrite-context";
 
 export type UserContextType = {
   loggedIn: boolean;
   username?: string;
   profilePicture?: string;
-  login: (username: string, password: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<boolean>;
+  signup: (
+    email: string,
+    password: string,
+    username: string
+  ) => Promise<boolean>;
   logout: () => Promise<void>;
   requireLogin(
     content: React.ReactNode,
@@ -22,6 +30,9 @@ export type UserContextType = {
 export const UserContext = createContext<UserContextType>({
   loggedIn: false,
   async login() {
+    throw new Error("User Context not yet initialized");
+  },
+  async signup() {
     throw new Error("User Context not yet initialized");
   },
   async logout() {
@@ -37,24 +48,79 @@ export function UserContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [username, setUsername] = useState<string | undefined>(undefined);
-  const [profilePicture, setProfilePicture] = useState<string | undefined>(
-    undefined
+  const appwriteContext = useContext(AppwriteContext);
+
+  const account = useMemo(
+    () => new Account(appwriteContext.client),
+    [appwriteContext.client]
+  );
+  const [session, setSession] = useState<Models.Session | null>(null);
+  const [prefs, setPrefs] = useState<Models.User<Models.Preferences> | null>(
+    null
   );
 
+  useEffect(() => {
+    (async () => {
+      try {
+        setPrefs(await account.get());
+        setSession(await account.getSession("current"));
+      } catch (e) {
+        // 401 means unauthorized and that there is no user currently logged in
+        if (e instanceof AppwriteException && e.code !== 401) {
+          console.error("Something went wrong: ", e);
+        }
+      }
+    })();
+  }, [setPrefs, setSession, account]);
+
   const login = useCallback(
-    async (username: string, password: string) => {
-      setUsername(username);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      return true;
+    async (email: string, password: string) => {
+      console.log("logging in", email);
+      try {
+        setSession(await account.createEmailSession(email, password));
+        setPrefs(await account.get());
+        return true;
+      } catch (e) {
+        if (e instanceof AppwriteException) {
+          console.warn(e);
+        } else {
+          console.error(e);
+        }
+        return false;
+      }
     },
-    [setUsername, setProfilePicture]
+    [setPrefs, setSession, account]
+  );
+  const signup = useCallback(
+    async (email: string, password: string, username: string) => {
+      try {
+        setPrefs(await account.create(ID.unique(), email, password, username));
+        setSession(await account.createEmailSession(email, password));
+        return true;
+      } catch (e) {
+        if (e instanceof AppwriteException) {
+          console.warn(e);
+        } else {
+          console.error(e);
+        }
+        return false;
+      }
+    },
+    [setPrefs, setSession, account]
   );
   const logout = useCallback(async () => {
-    setUsername(undefined);
-    setProfilePicture(undefined);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-  }, [setUsername, setProfilePicture]);
+    try {
+      await account.deleteSession("current");
+    } catch (e) {
+      if (e instanceof AppwriteException) {
+        console.warn(e);
+      } else {
+        console.error(e);
+      }
+    }
+    setSession(null);
+    setPrefs(null);
+  }, [setPrefs, setSession, account]);
 
   const requireLogin = useCallback(
     (
@@ -72,17 +138,19 @@ export function UserContextProvider({
     []
   );
 
+  console.log(prefs);
+
   const value = useMemo<UserContextType>(() => {
     return {
-      loggedIn: !!username,
-      profilePicture,
-      username,
+      loggedIn: !!session,
+      username: prefs?.name,
       login,
+      signup,
       logout,
       requireLogin(content, navigate) {
         return requireLogin(content, this, navigate);
       },
     };
-  }, [username, profilePicture, login, requireLogin]);
+  }, [session, prefs, login, signup, logout, requireLogin]);
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
