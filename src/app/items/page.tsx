@@ -1,13 +1,16 @@
+import { useContext } from "react";
 import Card from "../../components/card";
 import LoginCard from "../login/login-card";
 import ControlPanel from "./control-panel";
 
 import styles from "./page.module.scss";
 
+import { UserContext } from "../../context/user-context";
 import pikachu from "/pictures/pikachu.png?url";
 
 export default function ItemsPage() {
-  return (
+  const userContext = useContext(UserContext);
+  return userContext.requireVerified(
     <>
       <ControlPanel />
       <div className={styles.cards}>

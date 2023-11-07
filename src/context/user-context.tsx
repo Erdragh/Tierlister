@@ -7,13 +7,13 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { NavigateFunction } from "react-router-dom";
 import { AppwriteContext } from "./appwrite-context";
 
 export type UserContextType = {
   loggedIn: boolean;
   username?: string;
-  profilePicture?: string;
+  email?: string;
+  verified?: boolean;
   login: (email: string, password: string) => Promise<boolean>;
   signup: (
     email: string,
@@ -21,10 +21,8 @@ export type UserContextType = {
     username: string
   ) => Promise<boolean>;
   logout: () => Promise<void>;
-  requireLogin(
-    content: React.ReactNode,
-    navigate: NavigateFunction
-  ): React.ReactNode;
+  requireLogin(content: React.ReactNode): React.ReactNode;
+  requireVerified(content: React.ReactNode): React.ReactNode;
 };
 
 export const UserContext = createContext<UserContextType>({
@@ -39,6 +37,9 @@ export const UserContext = createContext<UserContextType>({
     throw new Error("User Context not yet initialized");
   },
   requireLogin() {
+    throw new Error("User Context not yet initialized");
+  },
+  requireVerified() {
     throw new Error("User Context not yet initialized");
   },
 });
@@ -123,32 +124,37 @@ export function UserContextProvider({
   }, [setPrefs, setSession, account]);
 
   const requireLogin = useCallback(
-    (
-      content: React.ReactNode,
-      userContext: UserContextType,
-      navigate: NavigateFunction
-    ) => {
-      useEffect(() => {
-        if (!userContext.loggedIn) navigate("/signup");
-      }, [userContext.loggedIn, navigate]);
-
+    (content: React.ReactNode, userContext: UserContextType) => {
       if (!userContext.loggedIn) return <>Requires being logged in.</>;
       return content;
     },
     []
   );
 
-  console.log(prefs);
+  const requireVerified = useCallback(
+    (content: React.ReactNode, userContext: UserContextType) => {
+      if (!userContext.loggedIn) return requireLogin(content, userContext);
+      if (!userContext.verified)
+        return <>Requires a verified E-Mail address.</>;
+      return content;
+    },
+    [requireLogin]
+  );
 
   const value = useMemo<UserContextType>(() => {
     return {
       loggedIn: !!session,
       username: prefs?.name,
+      email: prefs?.email,
+      verified: prefs?.emailVerification,
       login,
       signup,
       logout,
-      requireLogin(content, navigate) {
-        return requireLogin(content, this, navigate);
+      requireLogin(content) {
+        return requireLogin(content, this);
+      },
+      requireVerified(content) {
+        return requireVerified(content, this);
       },
     };
   }, [session, prefs, login, signup, logout, requireLogin]);
