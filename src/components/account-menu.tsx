@@ -1,4 +1,4 @@
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faRightFromBracket, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
@@ -23,6 +23,11 @@ export default function AccountMenu() {
           )}
         </div>
       </Link>
+      {userContext.loggedIn && (
+        <a className={styles.accountMenu} onClick={userContext.logout}>
+          Logout <FontAwesomeIcon icon={faRightFromBracket} />
+        </a>
+      )}
     </>
   );
 }

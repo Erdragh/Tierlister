@@ -1,4 +1,11 @@
-import React, { createContext, useCallback, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { NavigateFunction } from "react-router-dom";
 
 export type UserContextType = {
   loggedIn: boolean;
@@ -6,6 +13,10 @@ export type UserContextType = {
   profilePicture?: string;
   login: (username: string, password: string) => Promise<boolean>;
   logout: () => Promise<void>;
+  requireLogin(
+    content: React.ReactNode,
+    navigate: NavigateFunction
+  ): React.ReactNode;
 };
 
 export const UserContext = createContext<UserContextType>({
@@ -14,6 +25,9 @@ export const UserContext = createContext<UserContextType>({
     throw new Error("User Context not yet initialized");
   },
   async logout() {
+    throw new Error("User Context not yet initialized");
+  },
+  requireLogin() {
     throw new Error("User Context not yet initialized");
   },
 });
@@ -42,6 +56,22 @@ export function UserContextProvider({
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }, [setUsername, setProfilePicture]);
 
+  const requireLogin = useCallback(
+    (
+      content: React.ReactNode,
+      userContext: UserContextType,
+      navigate: NavigateFunction
+    ) => {
+      useEffect(() => {
+        if (!userContext.loggedIn) navigate("/signup");
+      }, [userContext.loggedIn, navigate]);
+
+      if (!userContext.loggedIn) return <>Requires being logged in.</>;
+      return content;
+    },
+    []
+  );
+
   const value = useMemo<UserContextType>(() => {
     return {
       loggedIn: !!username,
@@ -49,7 +79,10 @@ export function UserContextProvider({
       username,
       login,
       logout,
+      requireLogin(content, navigate) {
+        return requireLogin(content, this, navigate);
+      },
     };
-  }, [username, profilePicture, login]);
+  }, [username, profilePicture, login, requireLogin]);
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
