@@ -1,7 +1,14 @@
 import Button from "../../components/button";
 
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, {
+  FormEventHandler,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/user-context";
 import styles from "./login-card.module.scss";
 
 export default function LoginCard({
@@ -16,9 +23,25 @@ export default function LoginCard({
     setSignup(signup);
   }, [signup, setSignup]);
 
+  const userContext = useContext(UserContext);
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = useCallback<FormEventHandler<HTMLFormElement>>(
+    async (e) => {
+      e.preventDefault();
+      setLoading(true);
+      await userContext.login("asdf", "asdf");
+      setLoading(false);
+      navigate("/");
+    },
+    [userContext.login, setLoading]
+  );
+
   return (
     <dialog className={styles.container} open={route}>
-      <form>
+      <form onSubmit={handleLogin}>
         <label htmlFor="email">
           E-Mail
           <input
@@ -75,6 +98,9 @@ export default function LoginCard({
             .
           </>
         )}
+      </div>
+      <div className={`${styles.loading} ${loading ? styles.active : ""}`}>
+        <div>Loading...</div>
       </div>
     </dialog>
   );

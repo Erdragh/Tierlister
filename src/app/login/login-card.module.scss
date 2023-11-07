@@ -1,12 +1,7 @@
 .container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   z-index: 200;
   min-width: 300px;
   max-width: calc(100% - 2 * var(--sz-base));
-  max-height: 100%;
   overflow: auto;
   margin: 0;
 
@@ -48,5 +43,51 @@
     button {
       margin-top: var(--sz-base);
     }
+  }
+}
+
+div.loading {
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.2s;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(var(--clr-background-175-rgb), 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: var(--sz-base);
+  padding: var(--sz-base);
+  &::before {
+    content: "";
+    display: block;
+    width: 30px;
+    height: 30px;
+    border: 2px solid var(--clr-background-175-contrast);
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation-name: spin;
+    animation-duration: 0.8s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+
+  &.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(360deg);
   }
 }

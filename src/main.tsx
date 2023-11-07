@@ -6,6 +6,7 @@ import MainPage from "./app/main-page.tsx";
 import ItemsPage from "./app/items/page.tsx";
 import MainLayout from "./app/layout.tsx";
 import LoginPage from "./app/login/page.tsx";
+import { UserContextProvider } from "./context/user-context.tsx";
 import "./globals.scss";
 
 const router = createBrowserRouter([
@@ -35,6 +36,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("app")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <UserContextProvider>
+      <RouterProvider router={router} />
+    </UserContextProvider>
   </React.StrictMode>
 );
