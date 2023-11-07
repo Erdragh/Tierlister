@@ -16,11 +16,7 @@ export default function AccountMenu() {
       >
         {userContext.username ?? "Sign Up"}
         <div className={styles.profile}>
-          {userContext.profilePicture ? (
-            <img src={userContext.profilePicture} alt="Profile Picture" />
-          ) : (
-            <FontAwesomeIcon icon={faUser} />
-          )}
+          <FontAwesomeIcon icon={faUser} />
         </div>
       </Link>
       {userContext.loggedIn && (
