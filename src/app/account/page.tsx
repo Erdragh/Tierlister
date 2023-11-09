@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { UserContext } from "../../context/user-context";
+import Sessions from "./sessions";
 
 export default function AccountPage() {
   const userContext = useContext(UserContext);
@@ -14,6 +15,7 @@ export default function AccountPage() {
         <span>{userContext.email}</span>
         <span>{userContext.verified ? "Verified" : "Not Verified"}</span>
       </div>
+      <Sessions />
     </>
   );
 }
