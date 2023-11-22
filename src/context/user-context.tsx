@@ -5,6 +5,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { AppwriteContext } from "./appwrite-context";
@@ -78,6 +79,7 @@ export function UserContextProvider({
   );
   const [sessions, setSessions] = useState<UserContextSession[]>([]);
 
+  // TODO: optimize
   const fetchSessions = useCallback(async () => {
     const newSessions: UserContextSession[] = (
       await account.listSessions()
@@ -99,11 +101,16 @@ export function UserContextProvider({
       setPrefs(userPrefs);
       setSession(session);
     },
-    [setPrefs, setSession, account]
+    [setPrefs, setSession]
   );
+
+  const previousUpdateMethod = useRef<typeof update | null>(null);
 
   useEffect(() => {
     (async () => {
+      if (previousUpdateMethod.current == update) return;
+      previousUpdateMethod.current = update;
+      console.log("use effect");
       try {
         await update(await account.get(), await account.getSession("current"));
       } catch (e) {
@@ -113,7 +120,7 @@ export function UserContextProvider({
         }
       }
     })();
-  }, [setPrefs, setSession, account]);
+  }, [update, account]);
 
   const login = useCallback(
     async (email: string, password: string) => {
@@ -130,7 +137,7 @@ export function UserContextProvider({
         return false;
       }
     },
-    [setPrefs, setSession, account]
+    [update, account]
   );
   const signup = useCallback(
     async (email: string, password: string, username: string) => {
@@ -149,7 +156,7 @@ export function UserContextProvider({
         return false;
       }
     },
-    [setPrefs, setSession, account]
+    [update, account]
   );
   const logout = useCallback(async () => {
     try {
